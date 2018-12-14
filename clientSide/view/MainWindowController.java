@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import searchable.Searchable;
 import searchable.SearchablePipeGame;
 import state.Board;
 import state.State;

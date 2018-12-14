@@ -10,11 +10,18 @@ import state.State;
 public class SearchablePipeGame extends MySearchable<Board>{
 	public enum from {start, goal, right, left, up, down};
 	private double grade;
-
+	
 	public SearchablePipeGame(State<Board> t) {
 		super(t);
 		grade = setGrade(t);
 	}
+	
+	public List<char[]> rotateOnBoard(int i,int j) {
+		Board boardAfterRotation = this.getInitialState().getState();
+		boardAfterRotation.getBoard().get(i)[j] =  rotate(boardAfterRotation.getBoard().get(i)[j]);
+		return boardAfterRotation.getBoard();
+	}
+	
 	public char rotate(char ch) {
 		switch (ch) { //TODO might need to change the characters
 		case '-':
