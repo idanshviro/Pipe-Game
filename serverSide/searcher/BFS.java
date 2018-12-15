@@ -1,6 +1,5 @@
 package searcher;
 
-
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.List;
@@ -42,4 +41,6 @@ public class BFS extends CommonSearcher {
 		}
 		return null;
 	}
+
+
 }

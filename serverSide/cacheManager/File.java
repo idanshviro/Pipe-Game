@@ -7,10 +7,21 @@ import java.util.Scanner;
 import solver.Solution;
 
 public class File implements CacheManager{
-//    public static HashMap<String, String> solutionHmap = new HashMap<String, String>(); //// TODO CHECK IF WE NEED IT
 
+	@Override
+	public String load(String problem) {
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner( new java.io.File(problem.hashCode()+".txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		String text = scanner.useDelimiter("\\A").next();
+		scanner.close(); // Put this call in a finally block
+		return text;
+	}		
 
-   
+	
 	@Override
 	public void save(String problem, Solution sol) throws FileNotFoundException {
 		if (sol == null) {
@@ -32,24 +43,9 @@ public class File implements CacheManager{
 			}
 		}
 	}
-	
-	
-  @Override      
+	@Override
 	public boolean exists(String problem) {
 		java.io.File f = new java.io.File(problem.hashCode() + ".txt");	
 		return f.isFile(); //isFile checks ifExists()&&ifNormalFile()
 	}
-    
-    @Override
-	public String load(String problem) {
-		 Scanner scanner = null;
-		try {
-			scanner = new Scanner( new java.io.File(problem.hashCode()+".txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		String text = scanner.useDelimiter("\\A").next();
-		scanner.close(); // Put this call in a finally block
-		return text;
-	}	
 }

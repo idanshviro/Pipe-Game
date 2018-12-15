@@ -10,20 +10,20 @@ import state.State;
 public class SearchablePipeGame extends MySearchable<Board>{
 	public enum from {start, goal, right, left, up, down};
 	private double grade;
-	
+
 	public SearchablePipeGame(State<Board> t) {
 		super(t);
 		grade = setGrade(t);
 	}
 	
-	public List<char[]> rotateOnBoard(int i,int j) {
+	public Board rotateOnBoard(int i,int j) {
 		Board boardAfterRotation = this.getInitialState().getState();
 		boardAfterRotation.getBoard().get(i)[j] =  rotate(boardAfterRotation.getBoard().get(i)[j]);
-		return boardAfterRotation.getBoard();
+		return boardAfterRotation;
 	}
 	
 	public char rotate(char ch) {
-		switch (ch) { //TODO might need to change the characters
+		switch (ch) {
 		case '-':
 			return '|';
 		case '|':
@@ -46,7 +46,8 @@ public class SearchablePipeGame extends MySearchable<Board>{
 			return ' ';
 		}
 	}
-@Override
+	//
+	@Override
 	public List<State<Board>> getAllPossibleStates(State<Board> s) {
 		List<State<Board>> allPosStates = new ArrayList<State<Board>>();
 		Board level = s.getState();
@@ -72,7 +73,7 @@ public class SearchablePipeGame extends MySearchable<Board>{
 					State<Board> possibleSate = new State<Board>(board);
 					possibleSate.setCameFrom(s);
 					possibleSate.setCost(s.getCost() + 1);
-					if(isStartConnected(possibleSate) && !possibleSate.getState().OutOfBounds(i, j) 
+					if(isStartConnected(possibleSate) && !possibleSate.getState().outOfBounds(i, j) 
 							&& possibleSate.getState().tileIsConnected(i, j))
 					{
 						Action a = new Action(j,i);
@@ -104,7 +105,7 @@ public class SearchablePipeGame extends MySearchable<Board>{
 						Action a = new Action(j,i);
 						possibleSate.setAction(a);
 						possibleSate.setCost(copyOfs.getCost() + 1);
-						if(isStartConnected(possibleSate) && !possibleSate.getState().OutOfBounds(i, j) 
+						if(isStartConnected(possibleSate) && !possibleSate.getState().outOfBounds(i, j) 
 								&& possibleSate.getState().tileIsConnected(i, j))
 						{
 							allPosStates.add(possibleSate);
@@ -116,6 +117,36 @@ public class SearchablePipeGame extends MySearchable<Board>{
 		}
 		return allPosStates;
 	}
+	//	@Override
+	//	public List<State<Board>> getAllPossibleStates(State<Board> s) {
+	//
+	//		List<State<Board>> arr = new ArrayList<State<Board>>();
+	//
+	//		for(int i=0;i<s.getState().getBoard().size();i++) {//for line to numoflines
+	//			String line = new String(s.getState().getBoard().get(i));
+	//			for(int j=0;j<line.length();j++) {//for letter to line.length
+	//				if((!(line.charAt(j) == 's')) && (!(line.charAt(j) == 'g'))){
+	//					List<char[]> boardList = new ArrayList<char[]>();
+	//					for(int k=0;k<s.getState().getBoard().size();k++) {
+	//						String changedLine = new String(s.getState().getBoard().get(k));
+	//						if(k == i) { 
+	//							changedLine = changedLine.substring(0,j) + rotate(changedLine.charAt(j)) + changedLine.substring(j+1,changedLine.length());
+	//						}
+	//						boardList.add(changedLine.toCharArray());
+	//					}
+	//					Board board = new Board(boardList);
+	//					State<Board> possibleSate = new State<Board>(board);
+	//					arr.add(possibleSate);
+	//
+	//					Action a = new Action(j,i);
+	//					possibleSate.setAction(a);
+	//				}
+	//			}
+	//		}
+	//		return arr;
+	//	}
+
+
 
 	public int[] findChar(Board b,char ch) {
 		int[] charPosition = {-1,-1};
@@ -343,7 +374,6 @@ public class SearchablePipeGame extends MySearchable<Board>{
 		return findGrade(board, startPos, goalPos, from.start);
 	}
 
-	//Check Manhattan distance from s to g
 	private double findGrade(Board board, int[] pos,int[] goal, from f) {
 
 		if((pos[0]<0 || pos[1]<0) || (pos[0]>=board.getBoard().size())) {
@@ -625,7 +655,9 @@ public class SearchablePipeGame extends MySearchable<Board>{
 		}
 
 	}
-	//check if the state is connected
+
+
+
 	private boolean isStartConnected(State<Board> state) {
 		int[] startPos = findChar(state.getState(), 's');
 

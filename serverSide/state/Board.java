@@ -7,32 +7,15 @@ public class Board {
 	final List<char[]> board;
 	private int hash;
 
-	public Board(List<char[]> board){
+	public Board(List<char[]> board) {
 		this.board = board;
-		this.hash = hasHelper();
+		hash = hashHelper();
 	}
 
-	//Getter
 	public List<char[]> getBoard() {
 		return board;
 	}
 
-	@Override
-	public int hashCode() {
-		return hash;
-	}
-
-	public int hasHelper() {
-		hash = 1;
-		Iterator<char[]> i = this.board.iterator();
-		while (i.hasNext()) {
-			char[] obj = (char[])i.next();
-			for(int j=0;j<obj.length;j++){
-				hash= 31*hash + (obj==null ? 0 : (int)obj[j]);
-			}
-		}
-		return hash;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -44,17 +27,34 @@ public class Board {
 	}
 
 	@Override
+	public int hashCode() {
+		return hash;
+	}
+
+	public int hashHelper() {
+		hash = 1;
+		Iterator<char[]> i = this.board.iterator();
+		while (i.hasNext()) {
+			char[] obj = (char[])i.next();
+			for(int j=0;j<obj.length;j++){
+				hash= 31*hash + (obj==null ? 0 : (int)obj[j]);
+			}
+		}
+		return hash;
+	}
+
+
+	@Override
 	public String toString() {
 		String str = new String(board.get(0));
-		for(int i=1;i<board.size();i++) {
+		for (int i = 1;i<board.size();i++) {
 			String temp = new String(board.get(i));
 			str = str + "," + temp;
 		}
 		return str;
 	}
 
-	//check if specific letter is going out of bounds
-	public boolean OutOfBounds(int i,int j) {
+	public boolean outOfBounds(int i,int j) {
 		if (board.get(i)[j]=='L') {
 			return (i==0)||(j==((board.get(i).length)-1));
 		}
@@ -78,7 +78,6 @@ public class Board {
 		}
 	}
 
-//check if there is any connection for specific letter
 	public boolean tileIsConnected(int i, int j) {
 		char tile = board.get(i)[j];
 		if(tile == 'L') {
