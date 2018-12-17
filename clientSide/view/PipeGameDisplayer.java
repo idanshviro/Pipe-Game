@@ -121,6 +121,7 @@ public class PipeGameDisplayer extends Canvas{
 				for(int j=0; j<pipeGameBoard.get(0).length;j++) {
 					switch (pipeGameBoard.get(i)[j]) {
 					case 'L':
+					case 'l':
 						if(L == null) 
 							gc.fillRect(j*w,i*h,w,h);
 						gc.drawImage(L,j*w,i*h,w,h);
@@ -136,6 +137,7 @@ public class PipeGameDisplayer extends Canvas{
 						gc.drawImage(pipe,j*w,i*h,w,h);
 						break;
 					case 'F':
+					case 'f':
 						if(F == null) 
 							gc.fillRect(j*w,i*h,w,h);
 						gc.drawImage(F,j*w,i*h,w,h);

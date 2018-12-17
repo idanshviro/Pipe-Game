@@ -32,11 +32,11 @@ public class MainWindowController implements Initializable{
 		File chosen = fc.showOpenDialog(null);
 		if(chosen != null)
 		{
-			pipeGameDisplayer.setPipeGameBoard(loadLevel(chosen));
+			loadLevel(chosen);
 		}
 	}
 
-	public List<char[]> loadLevel(File f){
+	public void loadLevel(File f){
 		Scanner scanner = null;
 		List<char[]> level = new ArrayList<char[]>();
 		try {
@@ -52,7 +52,10 @@ public class MainWindowController implements Initializable{
 			level.add(line);
 		}
 		scanner.close();
-		return level;
+		pipeGameDisplayer.setPipeGameBoard(level);
+		b = new Board(pipeGameDisplayer.getPipeGameBoard());
+		boardState = new State<Board> (b);
+		searchable = new SearchablePipeGame(boardState);
 	}
 
 	@Override
@@ -61,20 +64,7 @@ public class MainWindowController implements Initializable{
 
 
 		pipeGameDisplayer.addEventFilter(MouseEvent.MOUSE_CLICKED, (e)->{pipeGameDisplayer.requestFocus();});
-
-		List<char[]> gameBoard = new ArrayList<char[]>();
-		gameBoard.add("s-|--7".toCharArray());
-		gameBoard.add("7-J--7".toCharArray());
-		gameBoard.add("J-L--7".toCharArray());
-		gameBoard.add("|----7".toCharArray());
-		gameBoard.add("|-F--7".toCharArray());
-		gameBoard.add("L-J--g".toCharArray());
-
-		pipeGameDisplayer.setPipeGameBoard(gameBoard);
-
-		b = new Board(pipeGameDisplayer.getPipeGameBoard());
-		boardState = new State<Board> (b);
-		searchable = new SearchablePipeGame(boardState);
+		loadLevel(new File("./resources/Levels/1.txt"));
 
 		pipeGameDisplayer.setOnMouseClicked(new EventHandler<MouseEvent>(){
 

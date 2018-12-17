@@ -29,12 +29,15 @@ public class SearchablePipeGame extends MySearchable<Board>{
 		case '|':
 			return '-';
 		case 'L':
+		case 'l':
 			return 'F';
 		case 'F':
+		case 'f':
 			return '7';
 		case '7':
 			return 'J';
 		case 'J':
+		case 'j':
 			return 'L';
 		case 'S':
 		case 's':
