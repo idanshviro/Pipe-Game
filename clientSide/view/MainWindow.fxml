@@ -34,23 +34,26 @@
    </top>
    <bottom>
       <HBox BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Status" />
-         </children>
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
+         <children>
+            <TextField prefHeight="27.0" prefWidth="123.0" text="Number of steps: " />
+            <TextField fx:id="Steps" prefHeight="27.0" prefWidth="211.0" />
+            <TextField prefHeight="27.0" prefWidth="55.0" text="Time:" />
+            <TextField fx:id="Time" prefHeight="27.0" prefWidth="211.0" />
+         </children>
       </HBox>
    </bottom>
    <left>
       <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" text="Start" />
             <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" text="Stop">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Button>
+            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" text="Start" textAlignment="CENTER" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
