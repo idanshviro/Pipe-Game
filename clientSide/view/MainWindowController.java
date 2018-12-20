@@ -1,37 +1,50 @@
 package view;
 
-import javafx.scene.control.TextField;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
-import com.sun.javafx.collections.IntegerArraySyncer;
-
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import searchable.SearchablePipeGame;
-import state.Board;
-import state.State;
+import viewModel.PipeGameViewModel;
 
 
 public class MainWindowController implements Initializable{
-	private Board b;
-	private State<Board> boardState;
-	private SearchablePipeGame searchable;
-	private int steps;
 
+	PipeGameViewModel vm;
+	ListProperty<char[]> board;
+	BooleanProperty isGoal;
+	IntegerProperty numberOfSteps;
+	
     @FXML
     private TextField Steps;
+    
+    @FXML
+    private TextField Time;
 	
 	@FXML
 	PipeGameDisplayer pipeGameDisplayer;
+	
+	public MainWindowController(PipeGameViewModel vm) {
+	this.vm = vm;
+	this.board = new SimpleListProperty<>();
+	this.board.bind(vm.board);
+	this.isGoal = new SimpleBooleanProperty();
+	this.isGoal.bind(vm.isGoal);
+	this.numberOfSteps = new SimpleIntegerProperty();
+	this.numberOfSteps.bind(vm.numberOfSteps);
+	}
+	
 	public void openFile() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("open Pipe Game file");
@@ -39,41 +52,17 @@ public class MainWindowController implements Initializable{
 		File chosen = fc.showOpenDialog(null);
 		if(chosen != null)
 		{
-			loadLevel(chosen);
+			vm.loadLevel(chosen);
 		}
-	}
-	
-	public String getSteps() {
-	return String.valueOf(steps);
 	}
 
-	public void loadLevel(File f){
-		steps=0;
-		Scanner scanner = null;
-		List<char[]> level = new ArrayList<char[]>();
-		try {
-			scanner = new Scanner(f);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		while (scanner.hasNext()){
-			char[] line=null;
-			String string = scanner.nextLine();	
-			line = string.toCharArray();
-			level.add(line);
-		}
-		scanner.close();
-		pipeGameDisplayer.setPipeGameBoard(level);
-		b = new Board(pipeGameDisplayer.getPipeGameBoard());
-		boardState = new State<Board> (b);
-		searchable = new SearchablePipeGame(boardState);
-	}
+
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {	
 		pipeGameDisplayer.addEventFilter(MouseEvent.MOUSE_CLICKED, (e)->{pipeGameDisplayer.requestFocus();});
-		loadLevel(new File("./resources/Levels/1.txt"));
+		vm.loadLevel(new File("./resources/Levels/1.txt"));
 
 		pipeGameDisplayer.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -83,14 +72,7 @@ public class MainWindowController implements Initializable{
 				double h = pipeGameDisplayer.getH();
 				int x = (int) (event.getX()/w);
 				int y = (int) (event.getY()/h);
-				char c = pipeGameDisplayer.pipeGameBoard.get(y)[x];
-				if(c == 'L' || c == 'l' ||c == 'F' || c == 'f' ||c == '7' || c == 'j'||c == 'J' || c == '-'||c == '|') {
-					steps++;
-					Steps.setText(getSteps());
-					searchable.rotateOnBoard(y,x);
-					pipeGameDisplayer.redraw();		
-				}
-
+				vm.rotate(y, x);
 			}
 		});
 	}
