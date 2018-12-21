@@ -1,6 +1,7 @@
 package view;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -55,6 +56,10 @@ public class MainWindowController implements Initializable{
 		{
 			vm.loadLevel(chosen);
 		}
+	}
+	
+	public void Save() throws FileNotFoundException {
+		vm.model.save();
 	}
 
 	public void addClickOnPipeBoardHandler() {

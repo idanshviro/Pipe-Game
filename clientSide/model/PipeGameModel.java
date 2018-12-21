@@ -38,10 +38,10 @@ public class PipeGameModel implements GameModel{
 	}
 
 	public void save() throws FileNotFoundException {
-		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		String timeStamp = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date());
 		try (PrintWriter out = new PrintWriter("./resources/saves/"+timeStamp+".txt")) {
 			for(int i=0;i<board.size();i++) {
-				String str = (board.get(i)).toString();
+				String str = new String( (board.getValue().get(i)) );
 				if(i==board.size()-1) { 
 					out.print(str);
 				}

@@ -16,7 +16,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open" />
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#Save" text="Save" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -37,18 +37,12 @@
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
-         <children>
-            <TextField prefHeight="27.0" prefWidth="123.0" text="Number of steps: " />
-            <TextField fx:id="Steps" prefHeight="27.0" prefWidth="100.0" />
-            <TextField prefHeight="27.0" prefWidth="55.0" text="Time:" />
-            <TextField fx:id="Time" prefHeight="27.0" prefWidth="125.0" />
-         </children>
       </HBox>
    </bottom>
    <left>
       <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" text="Stop">
+            <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" text="Solve">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
