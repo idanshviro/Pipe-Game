@@ -25,26 +25,27 @@ public class MainWindowController implements Initializable{
 	ListProperty<char[]> board;
 	BooleanProperty isGoal;
 	IntegerProperty numberOfSteps;
-	
-    @FXML
-    private TextField Steps;
-    
-    @FXML
-    private TextField Time;
-	
+
+	@FXML
+	private TextField Steps;
+
+	@FXML
+	private TextField Time;
+
 	@FXML
 	PipeGameDisplayer pipeGameDisplayer;
 	
-	public MainWindowController(PipeGameViewModel vm) {
-	this.vm = vm;
-	this.board = new SimpleListProperty<>();
-	this.board.bind(vm.board);
-	this.isGoal = new SimpleBooleanProperty();
-	this.isGoal.bind(vm.isGoal);
-	this.numberOfSteps = new SimpleIntegerProperty();
-	this.numberOfSteps.bind(vm.numberOfSteps);
-	}
 	
+	public MainWindowController(PipeGameViewModel vm) {
+		this.vm = vm;
+		this.board = new SimpleListProperty<>();
+		this.board.bind(vm.board);
+		this.isGoal = new SimpleBooleanProperty();
+		this.isGoal.bind(vm.isGoal);
+		this.numberOfSteps = new SimpleIntegerProperty();
+		this.numberOfSteps.bind(vm.numberOfSteps);
+	}
+
 	public void openFile() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("open Pipe Game file");
@@ -56,16 +57,13 @@ public class MainWindowController implements Initializable{
 		}
 	}
 
-
-
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {	
+	public void addClickOnPipeBoardHandler() {
+		if(pipeGameDisplayer==null)
+			return;
+		
 		pipeGameDisplayer.addEventFilter(MouseEvent.MOUSE_CLICKED, (e)->{pipeGameDisplayer.requestFocus();});
-		vm.loadLevel(new File("./resources/Levels/1.txt"));
 
 		pipeGameDisplayer.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
 			@Override
 			public void handle(MouseEvent event) {
 				double w = pipeGameDisplayer.getW();
@@ -73,7 +71,14 @@ public class MainWindowController implements Initializable{
 				int x = (int) (event.getX()/w);
 				int y = (int) (event.getY()/h);
 				vm.rotate(y, x);
+				pipeGameDisplayer.setPipeGameBoard(vm.board); //set calls for redraw automatically
 			}
 		});
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {	
+		pipeGameDisplayer.setPipeGameBoard(vm.board);
+		addClickOnPipeBoardHandler();
 	}
 }

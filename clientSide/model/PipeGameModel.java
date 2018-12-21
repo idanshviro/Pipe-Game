@@ -2,23 +2,54 @@ package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 
 
 
 public class PipeGameModel implements GameModel{
-	
+
 	public enum from {start, goal, right, left, up, down};
 	public ListProperty<char[]> board;
 	public BooleanProperty isGoal;
 	public IntegerProperty numberOfSteps;
 
+
+	public PipeGameModel() {
+		this.board = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
+		initializeBoard();
+		this.isGoal = new SimpleBooleanProperty();
+		this.numberOfSteps = new SimpleIntegerProperty(0);
+		this.board.addListener((observableValue, s, t1) -> {	
+			isGoal.set(isGoalState());
+		});
+	}
+
+	public void save() throws FileNotFoundException {
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try (PrintWriter out = new PrintWriter("./resources/saves/"+timeStamp+".txt")) {
+			for(int i=0;i<board.size();i++) {
+				String str = (board.get(i)).toString();
+				if(i==board.size()-1) { 
+					out.print(str);
+				}
+				else{out.println(str);}
+			}
+			out.close();
+		}
+	}
 
 	public void loadLevel(File f){ 
 		Scanner scanner = null;
@@ -75,7 +106,7 @@ public class PipeGameModel implements GameModel{
 			break;
 		}
 	}
-	
+
 	public boolean isGoalState() {
 		int[] startPos = findChar('s');
 		int[] goalPos = findChar('g');
@@ -108,7 +139,7 @@ public class PipeGameModel implements GameModel{
 		}
 		return charPosition;
 	}
-	
+
 	private boolean hasPath(int[] pos, from f) {
 
 		if((pos[0]<0 || pos[1]<0) || (pos[0]>=board.getSize())) {
@@ -269,4 +300,10 @@ public class PipeGameModel implements GameModel{
 	}
 
 
+	public void initializeBoard() {
+		List<char[]> level = new ArrayList<char[]>();
+		level.add("s||L".toCharArray());
+		level.add("---g".toCharArray());
+		this.board.addAll(level);
+	}
 }
