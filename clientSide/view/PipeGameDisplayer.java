@@ -16,7 +16,7 @@ public class PipeGameDisplayer extends Canvas{
 	double h;
 	private StringProperty wallFileName;
 	List<char[]> pipeGameBoard = new ArrayList<char[]>();
-	
+
 	@Override
 	public boolean isResizable() {
 		return true;
@@ -53,7 +53,7 @@ public class PipeGameDisplayer extends Canvas{
 		super.setHeight(height);
 		this.redraw();
 	}
-	
+
 	public double getW() {
 		return w;
 	}
@@ -79,6 +79,10 @@ public class PipeGameDisplayer extends Canvas{
 		redraw();
 	}
 
+	//	public void clear() {
+	//		GraphicsContext gc = getGraphicsContext2D();
+	//		gc.clearRect(0, 0, getWidth(), getHeight());
+	//	}
 	public void redraw() {
 		if(pipeGameBoard!=null) {
 			double W = getWidth();
@@ -109,11 +113,11 @@ public class PipeGameDisplayer extends Canvas{
 				G = new Image(new FileInputStream("./resources/basicTheme/G.png"));
 				empty = new Image(new FileInputStream("./resources/basicTheme/default.png"));
 				background = new Image(new FileInputStream("./resources/basicTheme/Background.jpg"));
-				
+
 			} catch (FileNotFoundException e) {
 				System.out.println(e);
 			}
-			
+
 			gc.clearRect(0, 0, W, H);
 			gc.drawImage(background, 0, 0, getWidth(), getHeight());
 

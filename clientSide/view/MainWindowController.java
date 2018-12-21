@@ -3,6 +3,7 @@ package view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
@@ -35,8 +36,8 @@ public class MainWindowController implements Initializable{
 
 	@FXML
 	PipeGameDisplayer pipeGameDisplayer;
-	
-	
+
+
 	public MainWindowController(PipeGameViewModel vm) {
 		this.vm = vm;
 		this.board = new SimpleListProperty<>();
@@ -57,15 +58,30 @@ public class MainWindowController implements Initializable{
 			vm.loadLevel(chosen);
 		}
 	}
-	
+
 	public void Save() throws FileNotFoundException {
-		vm.model.save();
+		vm.save();
+	}
+
+	public void solve() throws Exception {
+		List<String> solution = vm.solve();
+		for(int i=0; i<solution.size();i++) {
+			int y,x,numberOfRotations;
+			String[] line = solution.get(i).split(",");
+			y = Integer.parseInt(line[0]);
+			x = Integer.parseInt(line[1]);
+			numberOfRotations = Integer.parseInt(line[2]);
+			for(int j=0;j<numberOfRotations;j++) {
+				vm.rotate(y, x);
+				pipeGameDisplayer.setPipeGameBoard(vm.board);
+			}
+		}
 	}
 
 	public void addClickOnPipeBoardHandler() {
 		if(pipeGameDisplayer==null)
 			return;
-		
+
 		pipeGameDisplayer.addEventFilter(MouseEvent.MOUSE_CLICKED, (e)->{pipeGameDisplayer.requestFocus();});
 
 		pipeGameDisplayer.setOnMouseClicked(new EventHandler<MouseEvent>(){

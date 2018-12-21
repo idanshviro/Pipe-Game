@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import client.Client;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -51,14 +52,28 @@ public class PipeGameModel implements GameModel{
 		}
 	}
 
-	public void loadLevel(File f){ 
+	public List<String> solve() throws Exception {
+		String str = "";
+		for(int i=0;i<board.getSize();i++) 
+		{
+			str += new String(board.getValue().get(i));
+			str+= '\n';
+		}
+		str+= "done" + '\n';
+		List<String> solution = Client.getSolutionFromServer(str);
+		return solution;
+	}
+
+	public void loadLevel(File f){
 		Scanner scanner = null;
 		List<char[]> level = new ArrayList<char[]>();
 		try {
 			scanner = new Scanner(f);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if(!scanner.equals(null)) {
+			this.board.clear();
 		}
 		while (scanner.hasNext()){
 			char[] line=null;
