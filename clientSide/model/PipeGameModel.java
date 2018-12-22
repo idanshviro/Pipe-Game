@@ -83,8 +83,8 @@ public class PipeGameModel implements GameModel{
 		}
 		scanner.close();
 	}
-	
-	
+
+
 
 
 	public void rotate(int i , int j) {

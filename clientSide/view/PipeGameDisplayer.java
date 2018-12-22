@@ -2,15 +2,22 @@ package view;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.animation.RotateTransition;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+import javafx.embed.swing.JFXPanel;
 
 
 public class PipeGameDisplayer extends Canvas{
+	MediaPlayer mediaPlayer;
 	public enum theme{Lava , Silver};
 	private theme currentTheme;
 	double w;
@@ -40,7 +47,17 @@ public class PipeGameDisplayer extends Canvas{
 
 	public void setCurrentTheme(theme currentTheme) {
 		this.currentTheme = currentTheme;
+
 		try {
+		//Background music
+			Media audio = new Media(Paths.get("./resources/Themes/" + currentTheme.name() + "/Music.mp3").toUri().toString());
+			if(mediaPlayer != null) {
+				mediaPlayer.stop();
+			}
+			mediaPlayer = new MediaPlayer(audio);
+			mediaPlayer.setAutoPlay(true);
+			mediaPlayer.setCycleCount(10);
+			
 			dash = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/dash.png"));
 			pipe = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/pipe.png"));
 			L = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/L.png"));
@@ -119,6 +136,7 @@ public class PipeGameDisplayer extends Canvas{
 		this.pipeGameBoard = pipeGameBoard;
 		redraw();
 	}
+
 
 	//	public void clear() {
 	//		GraphicsContext gc = getGraphicsContext2D();

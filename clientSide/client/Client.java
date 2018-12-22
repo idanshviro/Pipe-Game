@@ -8,8 +8,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.shape.Arc;
-
 public class Client {
 
 	public static List<String> getSolutionFromServer(String board) throws Exception {
