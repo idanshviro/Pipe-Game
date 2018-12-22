@@ -46,6 +46,8 @@ public class PipeGameDisplayer extends Canvas{
 	}
 
 	public void setCurrentTheme(theme currentTheme) {
+		if(this.currentTheme==currentTheme)
+			return;
 		this.currentTheme = currentTheme;
 
 		try {
