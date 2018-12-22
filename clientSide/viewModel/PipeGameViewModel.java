@@ -39,6 +39,10 @@ public class PipeGameViewModel {
 	public void save() throws FileNotFoundException {
 		this.model.save();
 	}
+	
+	public void loadSavedLevel(File f) {
+		this.model.loadLevel(f);
+	}
 
 	public List<String> solve() throws Exception{
 		return this.model.solve();

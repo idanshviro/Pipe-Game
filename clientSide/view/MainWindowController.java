@@ -58,6 +58,17 @@ public class MainWindowController implements Initializable{
 			vm.loadLevel(chosen);
 		}
 	}
+	
+	public void openSavedFile() {
+		FileChooser fc = new FileChooser();
+		fc.setTitle("open Pipe Game file");
+		fc.setInitialDirectory(new File("./resources/Saves"));
+		File chosen = fc.showOpenDialog(null);
+		if(chosen != null)
+		{
+			vm.loadSavedLevel(chosen);
+		}
+	}
 
 	public void Save() throws FileNotFoundException {
 		vm.save();
