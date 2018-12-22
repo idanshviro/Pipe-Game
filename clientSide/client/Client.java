@@ -8,13 +8,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Client {
 
-	public static List<String> getSolutionFromServer(String board) throws Exception {
+	public static List<String> getSolutionFromServer(String board , int port , String host) throws Exception {
 
 		System.out.println("**** Client Side ****");
 
-		Socket theServer = new Socket("localhost", 6400);
+		Socket theServer = new Socket(host, port);
 		System.out.println("Connected to server");
 		BufferedReader inFromUser = new BufferedReader(new StringReader(board));
 		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(theServer.getInputStream()));

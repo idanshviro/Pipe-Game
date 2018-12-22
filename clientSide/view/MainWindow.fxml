@@ -15,9 +15,10 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="Game">
 					<items>
+						<MenuItem mnemonicParsing="false" onAction="#Save" text="Save" />
 						<MenuItem mnemonicParsing="false" onAction="#openFile" text="Load level" />
                   <MenuItem mnemonicParsing="false" onAction="#openSavedFile" text="Load saved level" />
-						<MenuItem mnemonicParsing="false" onAction="#Save" text="Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#settings" text="Settings" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Theme">
@@ -27,10 +28,9 @@
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
-					<items>
-						<MenuItem mnemonicParsing="false" text="About" />
-					</items>
-				</Menu>
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About" />
+               </items></Menu>
 			</menus>
 		</MenuBar>
 	</top>

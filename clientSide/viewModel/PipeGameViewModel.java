@@ -31,7 +31,7 @@ public class PipeGameViewModel {
 	public void rotate(int i, int j) {
 		this.model.rotate(i, j);
 	}
-	
+
 	public void loadLevel(File f){
 		this.model.loadLevel(f);
 	}
@@ -39,7 +39,7 @@ public class PipeGameViewModel {
 	public void save() throws FileNotFoundException {
 		this.model.save();
 	}
-	
+
 	public void loadSavedLevel(File f) {
 		this.model.loadLevel(f);
 	}
@@ -48,4 +48,11 @@ public class PipeGameViewModel {
 		return this.model.solve();
 	}
 
+	public void setPort(int port) {
+		this.model.setPort(port);
+	}
+
+	public void setHost(String host) {
+		this.model.setHost(host);
+	}
 }

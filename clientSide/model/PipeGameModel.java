@@ -26,11 +26,16 @@ public class PipeGameModel implements GameModel{
 	public ListProperty<char[]> board;
 	public BooleanProperty isGoal;
 	public IntegerProperty numberOfSteps;
+	private int port;
+	private String host;
+
 
 
 	public PipeGameModel() {
 		this.board = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
 		initializeBoard();
+		this.port = 6400;
+		this.host = "localhost";
 		this.isGoal = new SimpleBooleanProperty();
 		this.numberOfSteps = new SimpleIntegerProperty(0);
 		this.board.addListener((observableValue, s, t1) -> {	
@@ -60,7 +65,7 @@ public class PipeGameModel implements GameModel{
 			str+= '\n';
 		}
 		str+= "done" + '\n';
-		List<String> solution = Client.getSolutionFromServer(str);
+		List<String> solution = Client.getSolutionFromServer(str , port , host);
 		return solution;
 	}
 
@@ -322,5 +327,21 @@ public class PipeGameModel implements GameModel{
 		level.add("s||L".toCharArray());
 		level.add("---g".toCharArray());
 		this.board.addAll(level);
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
 	}
 }

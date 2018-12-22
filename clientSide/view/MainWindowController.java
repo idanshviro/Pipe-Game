@@ -1,11 +1,15 @@
 package view;
 
+import java.awt.Insets;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -16,10 +20,27 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Pair;
 import view.PipeGameDisplayer.theme;
 import viewModel.PipeGameViewModel;
 
@@ -87,6 +108,65 @@ public class MainWindowController implements Initializable{
 		}
 	}
 
+	public void settings() throws FileNotFoundException {
+		// Create the custom dialog.
+		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		dialog.setTitle("Server settings");
+		dialog.setHeaderText("Server settings");
+
+		// Set the icon (must be included in the project).
+		dialog.setGraphic(new ImageView(new Image(new FileInputStream("./resources/settings.png"))));
+
+		// Set the button types.
+		ButtonType saveButtonType = new ButtonType("save", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+		// Create the port and host labels and fields.
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+
+		TextField port = new TextField();
+		port.setPromptText(String.valueOf(vm.model.getPort()));
+		TextField host = new TextField();
+		host.setPromptText(vm.model.getHost());
+
+		grid.add(new Label("Port number:"), 0, 0);
+		grid.add(port, 1, 0);
+		grid.add(new Label("Host:"), 0, 1);
+		grid.add(host, 1, 1);
+
+		// Enable/Disable save button depending on whether a port was entered.
+		Node loginButton = dialog.getDialogPane().lookupButton(saveButtonType);
+		loginButton.setDisable(true);
+
+		// Do some validation (using the Java 8 lambda syntax).
+		port.textProperty().addListener((observable, oldValue, newValue) -> {
+			loginButton.setDisable(newValue.trim().isEmpty());
+		});
+
+		dialog.getDialogPane().setContent(grid);
+
+		// Request focus on the port field by default.
+		Platform.runLater(() -> port.requestFocus());
+
+		// Convert the result to a port-host-pair when the login button is clicked.
+		dialog.setResultConverter(dialogButton -> {
+			if (dialogButton == saveButtonType) {
+				return new Pair<>(port.getText(), host.getText());
+			}
+			return null;
+		});
+
+		Optional<Pair<String, String>> result = dialog.showAndWait();
+
+		if(result.isPresent()) {
+			String resultPort = result.get().getKey();
+			String resultHost = result.get().getValue();
+			vm.setPort(Integer.parseInt(resultPort));
+			vm.setHost(resultHost);
+		}
+	}
 	public void Save() throws FileNotFoundException {
 		vm.save();
 	}
