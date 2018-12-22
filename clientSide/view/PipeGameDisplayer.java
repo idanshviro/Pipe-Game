@@ -5,17 +5,58 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 
 public class PipeGameDisplayer extends Canvas{
+	public enum theme{Lava , Silver};
+	private theme currentTheme;
 	double w;
 	double h;
-	private StringProperty wallFileName;
 	List<char[]> pipeGameBoard = new ArrayList<char[]>();
+
+	//Images for setTheme
+	Image dash = null;
+	Image pipe = null;
+	Image L = null;
+	Image F = null;
+	Image seven = null;
+	Image J = null;
+	Image S = null;
+	Image G = null;
+	Image empty = null;
+	Image background = null;
+
+	public PipeGameDisplayer() {
+		super();
+		setCurrentTheme(theme.Silver);
+	}
+
+	public theme getCurrentTheme() {
+		return currentTheme;
+	}
+
+	public void setCurrentTheme(theme currentTheme) {
+		this.currentTheme = currentTheme;
+		try {
+			dash = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/dash.png"));
+			pipe = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/pipe.png"));
+			L = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/L.png"));
+			F = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/F.png"));
+			seven = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/7.png"));
+			J = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/J.png"));
+			S = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/S.png"));
+			G = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/G.png"));
+			empty = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/default.png"));
+			background = new Image(new FileInputStream("./resources/Themes/" + currentTheme.name() + "/Background.jpg"));
+
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		}
+
+	}
 
 	@Override
 	public boolean isResizable() {
@@ -83,6 +124,8 @@ public class PipeGameDisplayer extends Canvas{
 	//		GraphicsContext gc = getGraphicsContext2D();
 	//		gc.clearRect(0, 0, getWidth(), getHeight());
 	//	}
+
+
 	public void redraw() {
 		if(pipeGameBoard!=null) {
 			double W = getWidth();
@@ -92,31 +135,7 @@ public class PipeGameDisplayer extends Canvas{
 
 			GraphicsContext gc = getGraphicsContext2D();
 
-			Image dash = null;
-			Image pipe = null;
-			Image L = null;
-			Image F = null;
-			Image seven = null;
-			Image J = null;
-			Image S = null;
-			Image G = null;
-			Image empty = null;
-			Image background = null;
-			try {
-				dash = new Image(new FileInputStream("./resources/basicTheme/dash.png"));
-				pipe = new Image(new FileInputStream("./resources/basicTheme/pipe.png"));
-				L = new Image(new FileInputStream("./resources/basicTheme/L.png"));
-				F = new Image(new FileInputStream("./resources/basicTheme/F.png"));
-				seven = new Image(new FileInputStream("./resources/basicTheme/7.png"));
-				J = new Image(new FileInputStream("./resources/basicTheme/J.png"));
-				S = new Image(new FileInputStream("./resources/basicTheme/S.png"));
-				G = new Image(new FileInputStream("./resources/basicTheme/G.png"));
-				empty = new Image(new FileInputStream("./resources/basicTheme/default.png"));
-				background = new Image(new FileInputStream("./resources/basicTheme/Background.jpg"));
-
-			} catch (FileNotFoundException e) {
-				System.out.println(e);
-			}
+			// Images moved to the setTheme
 
 			gc.clearRect(0, 0, W, H);
 			gc.drawImage(background, 0, 0, getWidth(), getHeight());

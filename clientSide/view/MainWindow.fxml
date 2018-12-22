@@ -22,8 +22,8 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Theme">
 					<items>
-						<MenuItem mnemonicParsing="false" text="Lava theme" />
-                  <MenuItem mnemonicParsing="false" text="Silver theme" />
+						<MenuItem fx:id="Lava" mnemonicParsing="false" onAction="#changeTheme" text="Lava theme" />
+                  <MenuItem fx:id="Silver" mnemonicParsing="false" onAction="#changeTheme" text="Silver theme" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">

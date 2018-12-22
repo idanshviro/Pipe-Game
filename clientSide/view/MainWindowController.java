@@ -12,12 +12,15 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import view.PipeGameDisplayer.theme;
 import viewModel.PipeGameViewModel;
 
 
@@ -37,7 +40,21 @@ public class MainWindowController implements Initializable{
 	@FXML
 	PipeGameDisplayer pipeGameDisplayer;
 
+	@FXML
+	private MenuItem Lava;
+	@FXML
 
+	private MenuItem Silver;
+
+	@FXML
+	public void changeTheme(ActionEvent chosenTheme) {
+		if(chosenTheme.getSource() == Lava) {
+			pipeGameDisplayer.setCurrentTheme(theme.Lava);
+		}
+		else {
+			pipeGameDisplayer.setCurrentTheme(theme.Silver);
+		}
+	}
 	public MainWindowController(PipeGameViewModel vm) {
 		this.vm = vm;
 		this.board = new SimpleListProperty<>();
@@ -58,7 +75,7 @@ public class MainWindowController implements Initializable{
 			vm.loadLevel(chosen);
 		}
 	}
-	
+
 	public void openSavedFile() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("open Pipe Game file");

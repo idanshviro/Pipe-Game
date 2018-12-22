@@ -31,7 +31,7 @@ public class PipeGameViewModel {
 	public void rotate(int i, int j) {
 		this.model.rotate(i, j);
 	}
-
+	
 	public void loadLevel(File f){
 		this.model.loadLevel(f);
 	}
