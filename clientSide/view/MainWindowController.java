@@ -108,6 +108,7 @@ public class MainWindowController implements Initializable{
 		}
 	}
 
+	//settings dialog
 	public void settings() throws FileNotFoundException {
 		// Create the custom dialog.
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -166,7 +167,23 @@ public class MainWindowController implements Initializable{
 			vm.setPort(Integer.parseInt(resultPort));
 			vm.setHost(resultHost);
 		}
+
 	}
+	// About dialog
+	public void about() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("About Water Pipe Game");
+		alert.setHeaderText(null);
+		alert.setContentText("Water Pipe Game is one of the best puzzle games in the market. " +
+				"All you need to do is to rotate pipes, connect them and make a working pipeline."+ '\n'  + '\n' +
+				"Touch the pipes to turn them."+ '\n' +
+				"Construct a water path from start to goal."+ '\n' +  '\n' +
+				"If you can’t find the solution you can always click on solve button and our genius algorithm will solve it for you."+ '\n' + '\n' +
+				"This game was built by Idan Shviro and Bar Kazzaz." + '\n' 
+		+"For more information you can contact us at: idanshviro@gmail.com or barkazzaz@gmail.com");
+		alert.showAndWait();
+	}
+	
 	public void Save() throws FileNotFoundException {
 		vm.save();
 	}
