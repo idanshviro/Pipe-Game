@@ -15,7 +15,6 @@ import model.PipeGameModel;
 public class PipeGameViewModel {
 	public ListProperty<char[]> board;
 	public BooleanProperty isGoal;
-	public IntegerProperty numberOfSteps;
 	public PipeGameModel model;
 
 	public PipeGameViewModel(PipeGameModel m) {
@@ -24,8 +23,6 @@ public class PipeGameViewModel {
 		this.board.bind(m.board);
 		this.isGoal = new SimpleBooleanProperty();
 		this.isGoal.bind(m.isGoal);
-		this.numberOfSteps = new SimpleIntegerProperty();
-		this.numberOfSteps.bind(m.numberOfSteps);
 	}
 
 	public void rotate(int i, int j) {
@@ -36,8 +33,8 @@ public class PipeGameViewModel {
 		this.model.loadLevel(f);
 	}
 
-	public void save() throws FileNotFoundException {
-		this.model.save();
+	public boolean save() throws FileNotFoundException {
+		return this.model.save();
 	}
 
 	public void loadSavedLevel(File f) {

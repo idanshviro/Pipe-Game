@@ -16,6 +16,8 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -50,7 +52,6 @@ public class MainWindowController implements Initializable{
 	PipeGameViewModel vm;
 	ListProperty<char[]> board;
 	BooleanProperty isGoal;
-	IntegerProperty numberOfSteps;
 
 	@FXML
 	private TextField Steps;
@@ -82,8 +83,6 @@ public class MainWindowController implements Initializable{
 		this.board.bind(vm.board);
 		this.isGoal = new SimpleBooleanProperty();
 		this.isGoal.bind(vm.isGoal);
-		this.numberOfSteps = new SimpleIntegerProperty();
-		this.numberOfSteps.bind(vm.numberOfSteps);
 	}
 
 	public void openFile() {
@@ -180,16 +179,90 @@ public class MainWindowController implements Initializable{
 				"Construct a water path from start to goal."+ '\n' +  '\n' +
 				"If you can’t find the solution you can always click on solve button and our genius algorithm will solve it for you."+ '\n' + '\n' +
 				"This game was built by Idan Shviro and Bar Kazzaz." + '\n' 
-		+"For more information you can contact us at: idanshviro@gmail.com or barkazzaz@gmail.com");
+				+"For more information you can contact us at: idanshviro@gmail.com or barkazzaz@gmail.com");
 		alert.showAndWait();
 	}
 	
+	//error alert
+	public void alertError() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("ERROR");
+		alert.setHeaderText(null);
+		alert.setContentText("There is no solution for this game");
+		alert.showAndWait();
+	}
+
+	//alert for successful save
+	public void alertSaveSuccess() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Saved");
+		alert.setHeaderText(null);
+		alert.setContentText("Game saved");
+		alert.showAndWait();
+	}
+	
+	//alert for error while saving
+	public void alertSaveError() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("ERROR");
+		alert.setHeaderText(null);
+		alert.setContentText("Save error");
+		alert.showAndWait();
+	}
+	
+	//You Won! dialog
+	public void alertWonMessage() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Congratulations");
+		alert.setHeaderText(null);
+		alert.setContentText("You Won!");
+		alert.showAndWait();
+	}
+	
+	//alert when requesting a solution for an already solved game
+	public void alertAlreadySolved() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("ERROR");
+		alert.setHeaderText(null);
+		alert.setContentText("Game already solved");
+		alert.showAndWait();
+	}
+
+	public void addWinningListener() {
+
+		isGoal.addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				if(arg2) {
+					alertWonMessage();
+				}
+			}
+		});
+	}
+
 	public void Save() throws FileNotFoundException {
-		vm.save();
+		if(vm.save()) {
+			alertSaveSuccess();
+		}
+		else
+			alertWonMessage();
 	}
 
 	public void solve() throws Exception {
 		List<String> solution = vm.solve();
+		
+		if(!solution.isEmpty())
+		{
+			if(solution.get(0).equals("null")) {
+				alertError();
+				return;
+			}
+			if(solution.get(0).equals("solved")) {
+				alertAlreadySolved();
+				return;
+			}
+		}
 		for(int i=0; i<solution.size();i++) {
 			int y,x,numberOfRotations;
 			String[] line = solution.get(i).split(",");
@@ -226,5 +299,6 @@ public class MainWindowController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {	
 		pipeGameDisplayer.setPipeGameBoard(vm.board);
 		addClickOnPipeBoardHandler();
+		addWinningListener();
 	}
 }

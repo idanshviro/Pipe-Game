@@ -25,7 +25,6 @@ public class PipeGameModel implements GameModel{
 	public enum from {start, goal, right, left, up, down};
 	public ListProperty<char[]> board;
 	public BooleanProperty isGoal;
-	public IntegerProperty numberOfSteps;
 	private int port;
 	private String host;
 
@@ -37,13 +36,13 @@ public class PipeGameModel implements GameModel{
 		this.port = 6400;
 		this.host = "localhost";
 		this.isGoal = new SimpleBooleanProperty();
-		this.numberOfSteps = new SimpleIntegerProperty(0);
-		this.board.addListener((observableValue, s, t1) -> {	
-			isGoal.set(isGoalState());
-		});
+		isGoal.set(isGoalState());
+		//		this.board.addListener((observableValue, s, t1) -> {	
+		//			isGoal.set(isGoalState());
+		//		});
 	}
 
-	public void save() throws FileNotFoundException {
+	public boolean save() throws FileNotFoundException {
 		String timeStamp = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date());
 		try (PrintWriter out = new PrintWriter("./resources/Saves/"+timeStamp+".txt")) {
 			for(int i=0;i<board.size();i++) {
@@ -54,6 +53,11 @@ public class PipeGameModel implements GameModel{
 				else{out.println(str);}
 			}
 			out.close();
+			File f = new File("./resources/Saves/"+timeStamp+".txt");
+			if(f.exists())
+				return true;
+			else
+				return false;
 		}
 	}
 
@@ -70,6 +74,7 @@ public class PipeGameModel implements GameModel{
 	}
 
 	public void loadLevel(File f){
+		isGoal.set(isGoalState());
 		Scanner scanner = null;
 		List<char[]> level = new ArrayList<char[]>();
 		try {
@@ -127,6 +132,7 @@ public class PipeGameModel implements GameModel{
 			this.board.get(i)[j] = ' ';
 			break;
 		}
+		isGoal.set(isGoalState());
 	}
 
 	public boolean isGoalState() {
