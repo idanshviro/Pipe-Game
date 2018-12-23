@@ -21,6 +21,7 @@ public class PipeGameDisplayer extends Canvas{
 	double w;
 	double h;
 	List<char[]> pipeGameBoard = new ArrayList<char[]>();
+	boolean ismuted = false;
 
 	//Images for setTheme
 	Image dash = null;
@@ -39,6 +40,17 @@ public class PipeGameDisplayer extends Canvas{
 		setCurrentTheme(theme.Silver);
 	}
 
+	public void mute() {
+		if(!ismuted) {
+			mediaPlayer.setVolume(0.0);
+			ismuted = true;
+		}
+		else {
+			mediaPlayer.setVolume(100.0);
+			ismuted = false;
+		}
+	}
+	
 	public theme getCurrentTheme() {
 		return currentTheme;
 	}

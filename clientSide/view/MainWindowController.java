@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Insets;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,10 +11,8 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,9 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -35,15 +30,11 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Pair;
 import view.PipeGameDisplayer.theme;
 import viewModel.PipeGameViewModel;
@@ -85,6 +76,10 @@ public class MainWindowController implements Initializable{
 		this.board.bind(vm.board);
 		this.isGoal = new SimpleBooleanProperty();
 		this.isGoal.bind(vm.isGoal);
+	}
+	
+	public void mute() {
+		pipeGameDisplayer.mute();
 	}
 
 	public void openFile() {
@@ -263,7 +258,6 @@ public class MainWindowController implements Initializable{
 			}
 		}
         Task<Void> task = new Task<Void>() {
-    		
             @Override
             protected Void call() throws Exception {
             	try {          		

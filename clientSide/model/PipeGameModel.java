@@ -11,10 +11,8 @@ import java.util.Scanner;
 
 import client.Client;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 
@@ -37,6 +35,7 @@ public class PipeGameModel implements GameModel{
 		this.host = "localhost";
 		this.isGoal = new SimpleBooleanProperty();
 	}
+	
 
 	public boolean save() throws FileNotFoundException {
 		String timeStamp = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss").format(new Date());
