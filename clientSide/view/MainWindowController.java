@@ -4,6 +4,7 @@ import java.awt.Insets;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -251,29 +253,41 @@ public class MainWindowController implements Initializable{
 
 	public void solve() throws Exception {
 		List<String> solution = vm.solve();
-		
 		if(!solution.isEmpty())
 		{
 			if(solution.get(0).equals("null")) {
 				alertError();
-				return;
 			}
 			if(solution.get(0).equals("solved")) {
 				alertAlreadySolved();
-				return;
 			}
 		}
-		for(int i=0; i<solution.size();i++) {
-			int y,x,numberOfRotations;
-			String[] line = solution.get(i).split(",");
-			y = Integer.parseInt(line[0]);
-			x = Integer.parseInt(line[1]);
-			numberOfRotations = Integer.parseInt(line[2]);
-			for(int j=0;j<numberOfRotations;j++) {
-				vm.rotate(y, x);
-				pipeGameDisplayer.setPipeGameBoard(vm.board);
-			}
-		}
+        Task<Void> task = new Task<Void>() {
+    		
+            @Override
+            protected Void call() throws Exception {
+            	try {          		
+            		for(int i=0; i<solution.size();i++) {
+            			int y,x,numberOfRotations;
+            			String[] line = solution.get(i).split(",");
+            			y = Integer.parseInt(line[0]);
+            			x = Integer.parseInt(line[1]);
+            			numberOfRotations = Integer.parseInt(line[2]);
+            			for(int j=0;j<numberOfRotations;j++) {
+            				Platform.runLater(()->{vm.rotate(y,x);
+            				pipeGameDisplayer.setPipeGameBoard(vm.board);});
+            				Thread.sleep(250);
+            			}
+            		}
+            		System.out.println("Solving.");
+        			vm.solve();
+              		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
+				return null;
+            }
+        };
+        new Thread(task).start();
 	}
 
 	public void addClickOnPipeBoardHandler() {

@@ -36,10 +36,6 @@ public class PipeGameModel implements GameModel{
 		this.port = 6400;
 		this.host = "localhost";
 		this.isGoal = new SimpleBooleanProperty();
-		isGoal.set(isGoalState());
-		//		this.board.addListener((observableValue, s, t1) -> {	
-		//			isGoal.set(isGoalState());
-		//		});
 	}
 
 	public boolean save() throws FileNotFoundException {
