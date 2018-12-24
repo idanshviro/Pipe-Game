@@ -24,8 +24,8 @@ public class ServerConnection implements Runnable, Comparable<ServerConnection>{
 		return priority;
 	}
 
-	public ServerConnection(Socket socket,ClientHandler clienthandler) {
-		this.socket = socket;
+	public ServerConnection(Socket clientSocket,ClientHandler clienthandler) {
+		this.socket = clientSocket;
 		this.clienthandler = clienthandler;
 		try {
 			this.in = socket.getInputStream();
@@ -59,6 +59,7 @@ public class ServerConnection implements Runnable, Comparable<ServerConnection>{
 		return clientInput; //returns the game board in order to pass it to clientHandler
 	}
 
+	@Override
 	public void run() {
 		System.out.println(this.getPriority());//print on server to know the order of handling
 		clienthandler.handle(in, out, clientinput);
