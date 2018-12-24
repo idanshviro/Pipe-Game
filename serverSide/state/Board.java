@@ -83,16 +83,18 @@ public class Board {
 		if(tile == 'L') {
 			//go up
 			if(i>0) {
-				char ch = board.get(i-1)[j];
-				switch (ch) {
-				case 's':
-				case 'g':
-				case '|':
-				case '7':
-				case 'F':
-					return true;
-				default:
-					break;
+				if(board.get(i-1).length>j) {
+					char ch = board.get(i-1)[j];
+					switch (ch) {
+					case 's':
+					case 'g':
+					case '|':
+					case '7':
+					case 'F':
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 			//go right
@@ -128,16 +130,18 @@ public class Board {
 			}
 			//go down
 			if(i<board.size()-1) {
-				char ch = board.get(i+1)[j];
-				switch (ch) {
-				case 's':
-				case 'g':
-				case '|':
-				case 'J':
-				case 'L':
-					return true;
-				default:
-					break;
+				if(board.get(i+1).length>j) {
+					char ch = board.get(i+1)[j];
+					switch (ch) {
+					case 's':
+					case 'g':
+					case '|':
+					case 'J':
+					case 'L':
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 			return false;
@@ -145,16 +149,18 @@ public class Board {
 		else if(tile == '7') {
 			//go down
 			if(i<board.size()-1) {
-				char ch = board.get(i+1)[j];
-				switch (ch) {
-				case 's':
-				case 'g':
-				case '|':
-				case 'J':
-				case 'L':
-					return true;
-				default:
-					break;
+				if(board.get(i+1).length>j) {
+					char ch = board.get(i+1)[j];
+					switch (ch) {
+					case 's':
+					case 'g':
+					case '|':
+					case 'J':
+					case 'L':
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 			//go left
@@ -190,16 +196,18 @@ public class Board {
 			}
 			//go up
 			if(i>0) {
-				char ch = board.get(i-1)[j];
-				switch (ch) {
-				case 's':
-				case 'g':
-				case '|':
-				case 'F':
-				case '7':
-					return true;
-				default:
-					break;
+				if(board.get(i-1).length>j) {
+					char ch = board.get(i-1)[j];
+					switch (ch) {
+					case 's':
+					case 'g':
+					case '|':
+					case 'F':
+					case '7':
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 			return false;
@@ -238,30 +246,34 @@ public class Board {
 		else if(tile == '|') {
 			//go down
 			if(i<board.size()-1) {
-				char ch = board.get(i+1)[j];
-				switch (ch) {
-				case 's':
-				case 'g':
-				case '|':
-				case 'J':
-				case 'L':
-					return true;
-				default:
-					break;
+				if(board.get(i+1).length>j) {
+					char ch = board.get(i+1)[j];
+					switch (ch) {
+					case 's':
+					case 'g':
+					case '|':
+					case 'J':
+					case 'L':
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 			//go up
 			if(i>0) {
-				char ch = board.get(i-1)[j];
-				switch (ch) {
-				case 's':
-				case 'g':
-				case '|':
-				case '7':
-				case 'F':
-					return true;
-				default:
-					break;
+				if(board.get(i-1).length>j) {
+					char ch = board.get(i-1)[j];
+					switch (ch) {
+					case 's':
+					case 'g':
+					case '|':
+					case '7':
+					case 'F':
+						return true;
+					default:
+						break;
+					}
 				}
 			}
 			return false;
