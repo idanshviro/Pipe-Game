@@ -69,7 +69,6 @@ public class PipeGameModel implements GameModel{
 	}
 
 	public void loadLevel(File f){
-		isGoal.set(isGoalState());
 		Scanner scanner = null;
 		List<char[]> level = new ArrayList<char[]>();
 		try {
@@ -87,6 +86,7 @@ public class PipeGameModel implements GameModel{
 			this.board.add(line);
 		}
 		scanner.close();
+		isGoal.set(isGoalState());
 	}
 
 
@@ -127,7 +127,6 @@ public class PipeGameModel implements GameModel{
 			this.board.get(i)[j] = ' ';
 			break;
 		}
-		isGoal.set(isGoalState());
 	}
 
 	public boolean isGoalState() {

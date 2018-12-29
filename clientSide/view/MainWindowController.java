@@ -77,7 +77,7 @@ public class MainWindowController implements Initializable{
 		this.isGoal = new SimpleBooleanProperty();
 		this.isGoal.bind(vm.isGoal);
 	}
-	
+
 	public void mute() {
 		pipeGameDisplayer.mute();
 	}
@@ -90,6 +90,7 @@ public class MainWindowController implements Initializable{
 		if(chosen != null)
 		{
 			vm.loadLevel(chosen);
+			pipeGameDisplayer.redraw();
 		}
 	}
 
@@ -101,6 +102,7 @@ public class MainWindowController implements Initializable{
 		if(chosen != null)
 		{
 			vm.loadSavedLevel(chosen);
+			pipeGameDisplayer.redraw();
 		}
 	}
 
@@ -179,7 +181,7 @@ public class MainWindowController implements Initializable{
 				+"For more information you can contact us at: idanshviro@gmail.com or barkazzaz@gmail.com");
 		alert.showAndWait();
 	}
-	
+
 	//error alert
 	public void alertError() {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -197,7 +199,7 @@ public class MainWindowController implements Initializable{
 		alert.setContentText("Game saved");
 		alert.showAndWait();
 	}
-	
+
 	//alert for error while saving
 	public void alertSaveError() {
 		Alert alert = new Alert(AlertType.ERROR);
@@ -206,7 +208,7 @@ public class MainWindowController implements Initializable{
 		alert.setContentText("Save error");
 		alert.showAndWait();
 	}
-	
+
 	//You Won! dialog
 	public void alertWonMessage() {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -215,7 +217,7 @@ public class MainWindowController implements Initializable{
 		alert.setContentText("You Won!");
 		alert.showAndWait();
 	}
-	
+
 	//alert when requesting a solution for an already solved game
 	public void alertAlreadySolved() {
 		Alert alert = new Alert(AlertType.WARNING);
@@ -248,40 +250,38 @@ public class MainWindowController implements Initializable{
 
 	public void solve() throws Exception {
 		List<String> solution = vm.solve();
-		if(!solution.isEmpty())
-		{
-			if(solution.get(0).equals("null")) {
-				alertError();
+		if(!solution.isEmpty()){
+			{
+				if(solution.get(0).equals("null")) {
+					alertError();
+				}
+				if(solution.get(0).equals("solved")) {
+					alertAlreadySolved();
+				}
 			}
-			if(solution.get(0).equals("solved")) {
-				alertAlreadySolved();
-			}
+			Task<Void> task = new Task<Void>() {
+				@Override
+				protected Void call() throws Exception {
+					for(int i=0; i<solution.size();i++) {
+						int y,x,numberOfRotations;
+						String[] line = solution.get(i).split(",");
+						y = Integer.parseInt(line[0]);
+						x = Integer.parseInt(line[1]);
+						numberOfRotations = Integer.parseInt(line[2]);
+						for(int j=0;j<numberOfRotations;j++) {
+							Platform.runLater(()->{
+								vm.rotate(y,x);
+								pipeGameDisplayer.setPipeGameBoard(vm.board);
+								vm.isGoal();
+							});
+							Thread.sleep(250);
+						}
+					}
+					return null;
+				}
+			};
+			new Thread(task).start();
 		}
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-            	try {          		
-            		for(int i=0; i<solution.size();i++) {
-            			int y,x,numberOfRotations;
-            			String[] line = solution.get(i).split(",");
-            			y = Integer.parseInt(line[0]);
-            			x = Integer.parseInt(line[1]);
-            			numberOfRotations = Integer.parseInt(line[2]);
-            			for(int j=0;j<numberOfRotations;j++) {
-            				Platform.runLater(()->{vm.rotate(y,x);
-            				pipeGameDisplayer.setPipeGameBoard(vm.board);});
-            				Thread.sleep(250);
-            			}
-            		}
-            		System.out.println("Solving.");
-        			vm.solve();
-              		} catch (IOException e) {
-        			e.printStackTrace();
-        		}
-				return null;
-            }
-        };
-        new Thread(task).start();
 	}
 
 	public void addClickOnPipeBoardHandler() {
@@ -299,6 +299,7 @@ public class MainWindowController implements Initializable{
 				int y = (int) (event.getY()/h);
 				vm.rotate(y, x);
 				pipeGameDisplayer.setPipeGameBoard(vm.board); //set calls for redraw automatically
+				vm.isGoal();
 			}
 		});
 	}

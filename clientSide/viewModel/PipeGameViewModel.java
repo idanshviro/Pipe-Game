@@ -52,4 +52,8 @@ public class PipeGameViewModel {
 	public void setHost(String host) {
 		this.model.setHost(host);
 	}
+
+	public void isGoal() {
+		this.model.isGoal.set(this.model.isGoalState());
+	}
 }
