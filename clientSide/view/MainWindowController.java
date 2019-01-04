@@ -169,61 +169,53 @@ public class MainWindowController implements Initializable{
 	}
 	// About dialog
 	public void about() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("About Water Pipe Game");
-		alert.setHeaderText(null);
-		alert.setContentText("Water Pipe Game is one of the best puzzle games in the market. " +
-				"All you need to do is to rotate pipes, connect them and make a working pipeline."+ '\n'  + '\n' +
-				"Touch the pipes to turn them."+ '\n' +
-				"Construct a water path from start to goal."+ '\n' +  '\n' +
-				"If you can’t find the solution you can always click on solve button and our genius algorithm will solve it for you."+ '\n' + '\n' +
-				"This game was built by Idan Shviro and Bar Kazzaz." + '\n' 
-				+"For more information you can contact us at: idanshviro@gmail.com or barkazzaz@gmail.com");
-		alert.showAndWait();
+		this.alert("About Water Pipe Game",
+				"Water Pipe Game is one of the best puzzle games in the market. " +
+						"All you need to do is to rotate pipes, connect them and make a working pipeline."+ '\n'  + '\n' +
+						"Touch the pipes to turn them."+ '\n' +
+						"Construct a water path from start to goal."+ '\n' +  '\n' +
+						"If you can't find the solution you can always click on solve button and our genius algorithm will solve it for you."+ '\n' + '\n' +
+						"This game was built by Idan Shviro and Bar Kazzaz." + '\n' 
+						+"For more information you can contact us at: idanshviro@gmail.com or barkazzaz@gmail.com",
+						AlertType.INFORMATION);
 	}
 
 	//error alert
 	public void alertError() {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("ERROR");
-		alert.setHeaderText(null);
-		alert.setContentText("There is no solution for this game");
-		alert.showAndWait();
+		this.alert("ERROR","There is no solution for this game",AlertType.ERROR);
+
 	}
 
 	//alert for successful save
 	public void alertSaveSuccess() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Saved");
-		alert.setHeaderText(null);
-		alert.setContentText("Game saved");
-		alert.showAndWait();
+		this.alert("Saved","Game saved",AlertType.INFORMATION);
 	}
 
 	//alert for error while saving
 	public void alertSaveError() {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("ERROR");
-		alert.setHeaderText(null);
-		alert.setContentText("Save error");
-		alert.showAndWait();
+		this.alert("ERROR","Save error",AlertType.ERROR);
+	}
+
+	//if the server is not up and you press Solve
+	public void alertConnectionError(){
+		this.alert("ERROR","Server Connection Error\nTo adjust server settings go to:\nGame->Settings",AlertType.ERROR);
 	}
 
 	//You Won! dialog
 	public void alertWonMessage() {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Congratulations");
-		alert.setHeaderText(null);
-		alert.setContentText("You Won!");
-		alert.showAndWait();
+		this.alert("Congratulations","You Won!",AlertType.INFORMATION);
 	}
 
 	//alert when requesting a solution for an already solved game
 	public void alertAlreadySolved() {
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("ERROR");
+		this.alert("ERROR","Game already solved",AlertType.WARNING);
+	}
+
+	public void alert(String alertTitle, String alertBody,AlertType type) {
+		Alert alert = new Alert(type);
+		alert.setTitle(alertTitle);
 		alert.setHeaderText(null);
-		alert.setContentText("Game already solved");
+		alert.setContentText(alertBody);
 		alert.showAndWait();
 	}
 
@@ -248,8 +240,14 @@ public class MainWindowController implements Initializable{
 			alertWonMessage();
 	}
 
-	public void solve() throws Exception {
-		List<String> solution = vm.solve();
+	public void solve() {
+		List<String> solution;
+		try {
+			solution = vm.solve();
+		} catch (Exception e) {
+			alertConnectionError();
+			return;
+		}
 		if(!solution.isEmpty()){
 			{
 				if(solution.get(0).equals("null")) {

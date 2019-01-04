@@ -61,7 +61,6 @@ public class ServerConnection implements Runnable, Comparable<ServerConnection>{
 
 	@Override
 	public void run() {
-		System.out.println(this.getPriority());//print on server to know the order of handling
 		clienthandler.handle(in, out, clientinput);
 	}
 

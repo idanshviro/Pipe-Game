@@ -13,10 +13,7 @@ public class Client {
 
 	public static List<String> getSolutionFromServer(String board , int port , String host) throws Exception {
 
-		System.out.println("**** Client Side ****");
-
 		Socket theServer = new Socket(host, port);
-		System.out.println("Connected to server");
 		BufferedReader inFromUser = new BufferedReader(new StringReader(board));
 		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(theServer.getInputStream()));
 		PrintWriter outToServer = new PrintWriter(theServer.getOutputStream());
@@ -32,10 +29,7 @@ public class Client {
 		String newline;
 		while (!(newline = inFromServer.readLine()).equals("done")) {
 			solution.add(newline);
-			System.out.println(newline);
 		}
-		//		System.out.println("closing everything");
-		//Close everything
 		inFromServer.close();
 		outToServer.close();
 		inFromUser.close();
