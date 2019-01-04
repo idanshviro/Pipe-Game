@@ -70,7 +70,7 @@ public class PipeGameModel implements GameModel{
 
 	public void loadLevel(File f){
 		Scanner scanner = null;
-		List<char[]> level = new ArrayList<char[]>();
+//		List<char[]> level = new ArrayList<char[]>();
 		try {
 			scanner = new Scanner(f);
 		} catch (FileNotFoundException e) {

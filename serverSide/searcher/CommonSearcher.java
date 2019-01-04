@@ -49,13 +49,13 @@ public abstract class CommonSearcher implements Searcher{
 	
 	@Override
 	public Solution search(Searchable<?> s) {
-		long startTime = System.currentTimeMillis();
+//		long startTime = System.currentTimeMillis();
 //		System.out.println("algoSearch started");
 		
 		Solution solution = algorithm(s);
 		
-		long stopTime = System.currentTimeMillis();
-		double elapsedTime = stopTime - startTime;
+//		long stopTime = System.currentTimeMillis();
+//		double elapsedTime = stopTime - startTime;
 //		System.out.println("algoSearch total seconds: " + elapsedTime/1000);
 //		System.out.println("algoSearch total evaluated nodes: " + evaluatedNodes);
 		return solution;
